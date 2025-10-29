@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodPrint | Blood Group Detection from Fingerprint</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand animate__animated animate__fadeInLeft" href="/">
+                <i class="fas fa-fingerprint me-2"></i>BloodPrint
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active animate__animated animate__fadeInDown" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link animate__animated animate__fadeInDown" href="/about" style="animation-delay: 0.1s;">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="row hero-section">
+            <div class="col-md-6 d-flex flex-column justify-content-center animate__animated animate__fadeInLeft">
+                <h1 class="display-4">Blood Group Detection from Fingerprint</h1>
+                <p class="lead">Upload a fingerprint image and our advanced AI will predict the blood group using deep learning CNN technology.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="#upload-section" class="btn btn-primary btn-lg px-4 me-md-2">Try Now</a>
+                    <a href="/about" class="btn btn-outline-light btn-lg px-4">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-6 animate__animated animate__fadeInRight">
+                <div class="hero-image">
+                    <img width="50%"  src="https://static.vecteezy.com/system/resources/previews/017/811/868/non_2x/3d-illustration-of-finger-print-free-png.png" alt="Fingerprint" class="img-fluid">
+                </div>
+            </div>
+        </div>
+
+        <section id="upload-section" class="upload-section animate__animated animate__fadeInUp">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Upload Fingerprint Image</h2>
+                    
+                    <div class="upload-area" id="drop-area">
+                        <form id="upload-form" enctype="multipart/form-data">
+                            <input type="file" id="file-input" name="file" accept="image/png, image/jpeg, image/bmp" class="d-none">
+                            <label for="file-input" class="upload-label">
+                                <div class="upload-placeholder">
+                                    <i class="fas fa-fingerprint upload-icon"></i>
+                                    <p>Drag & drop your fingerprint image or click to browse</p>
+                                </div>
+                                <div class="upload-preview d-none">
+                                    <img id="preview-image" src="#" alt="Preview">
+                                </div>
+                            </label>
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg" id="submit-btn" disabled>
+                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loading-spinner"></span>
+                                    <span id="submit-text">Analyze Fingerprint</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="result-section" class="result-section d-none animate__animated">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Prediction Results</h2>
+                    
+                    <div class="result-container">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                <div class="blood-group-display">
+                                    <div class="blood-group-circle">
+                                        <span id="result-blood-group">A+</span>
+                                    </div>
+                                </div>
+                                <h3 class="mt-3" style="color: beige;">Predicted Blood Group</h3>
+                                <p id="result-confidence" style="color: beige;">Confidence: 95%</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="mb-3" style="color: beige;">Probability Distribution</h4>
+                                <div id="probability-chart"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="blood-facts mt-4">
+                            <h4>Blood Group Facts</h4>
+                            <div id="blood-facts-content"></div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button id="try-again-btn" class="btn btn-outline-primary">Try Another Image</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="text-center">
+                <p>&copy; 2023 BloodPrint | AI-Based Blood Group Detection System</p>
+                <p class="small">Powered by Deep Learning CNN Technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 
