@@ -1,1 +1,6 @@
 dataset_blood_group/
+.DS_Store
+dataset_blood_group/
+uploads/
+venv/
+__pycache__/
