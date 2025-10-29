@@ -4,3 +4,5 @@ dataset_blood_group/
 uploads/
 venv/
 __pycache__/
+blood_group_model_best.h5
+blood_group_model_final.h5
